@@ -4,7 +4,7 @@ import Icon from '@ant-design/icons';
 import { Button, Layout, theme as ThemeManager } from 'antd';
 import { useRouter } from 'next/navigation';
 import React, { useMemo } from 'react';
-import { HiOutlineUser } from 'react-icons/hi';
+import { AiOutlineWallet } from 'react-icons/ai';
 import { useAccount, useConnect } from 'wagmi';
 
 export const Application = function Application({ children }: React.PropsWithChildren) {
@@ -45,7 +45,7 @@ export const Application = function Application({ children }: React.PropsWithChi
 					<div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
 						{isDisconnected ? (
 							<>
-								<Button disabled={!connector.ready} onClick={() => connect({ connector })}>
+								<Button type={'primary'} disabled={!connector.ready} onClick={() => connect({ connector })}>
 									{'Connect wallet'}
 								</Button>
 							</>
@@ -54,7 +54,7 @@ export const Application = function Application({ children }: React.PropsWithChi
 								<Button>{'TODO'}</Button>
 
 								<Button
-									icon={<Icon component={() => <HiOutlineUser />} />}
+									icon={<Icon component={() => <AiOutlineWallet />} />}
 									onClick={() => router.push('/users/' + address)}
 								>
 									{''}

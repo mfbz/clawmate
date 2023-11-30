@@ -7,13 +7,14 @@ export const DARK_THEME: ThemeConfig = {
 		colorBgBase: '#161D27',
 		colorBgContainer: '#161D27',
 		colorInfo: '#ffffff',
-		borderRadius: 16,
+		borderRadius: 0,
 	},
 	components: {
 		Button: {
-			borderRadius: 16,
+			borderRadius: 0,
 			primaryColor: '#0d1117',
 			defaultBg: '#0d1117',
+			controlOutlineWidth: 0,
 		},
 		Layout: {
 			headerHeight: 64,
@@ -24,11 +25,11 @@ export const DARK_THEME: ThemeConfig = {
 			colorBgElevated: '#161D27',
 		},
 		Input: {
-			borderRadius: 8,
-			borderRadiusLG: 8,
-			borderRadiusSM: 8,
-			borderRadiusXS: 8,
-			borderRadiusOuter: 8,
+			borderRadius: 0,
+			borderRadiusLG: 0,
+			borderRadiusSM: 0,
+			borderRadiusXS: 0,
+			borderRadiusOuter: 0,
 		},
 		Form: {
 			itemMarginBottom: 16,
