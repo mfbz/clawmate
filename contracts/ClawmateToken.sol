@@ -6,13 +6,13 @@ import '@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 
 contract ClawmateToken is ERC20, ERC20Burnable, Ownable {
-	constructor(address initialOwner) ERC20('ClawmateToken', 'CLAW') Ownable(initialOwner) {}
+	constructor(address _initialOwner) ERC20('ClawmateToken', 'CLAW') Ownable(_initialOwner) {}
 
-	function mintTo(address to, uint256 amount) public onlyOwner {
-		_mint(to, amount);
+	function mintTo(address _to, uint256 _amount) public onlyOwner {
+		_mint(_to, _amount);
 	}
 
-	function burnFrom(address from, uint256 amount) public override onlyOwner {
-		super.burnFrom(from, amount);
+	function burnFrom(address _from, uint256 _amount) public override onlyOwner {
+		super.burnFrom(_from, _amount);
 	}
 }
