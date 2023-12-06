@@ -71,7 +71,7 @@ contract ClawmateManager is IERC721Receiver, Ownable, ReentrancyGuard {
 		return this.onERC721Received.selector;
 	}
 
-	function grabToken() external payable nonReentrant {
+	function grabToken() external nonReentrant {
 		// Require that sender has at least enough tokens to grab
 		require(clawContract.allowance(msg.sender, address(this)) >= grabPrice, 'Not enough token allowance');
 		// Require that there is at least 1 token deposited
