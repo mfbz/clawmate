@@ -8,7 +8,8 @@
 		"web:lint": "next lint",
 		"contracts:compile": "hardhat compile",
 		"contracts:deploy": "hardhat run scripts/deploy.js --network caldera",
-		"contracts:read": "hardhat run scripts/read.js --network caldera"
+		"contracts:read": "hardhat run scripts/read.js --network caldera",
+		"contracts:nft": "hardhat run scripts/nft.js --network caldera"
 	},
 	"dependencies": {
 		"@ant-design/cssinjs": "^1.18.0-alpha.0",
