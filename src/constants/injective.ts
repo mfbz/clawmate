@@ -3,27 +3,27 @@ export type NetworkType = 'testnet' | 'mainnet';
 export const NETWORK_DATA_MAP = {
 	mainnet: {
 		general: {
-			injectivePrice: 0.15,
+			injectivePrice: 18,
 		},
 		contracts: {
 			ClawmateManager: {
 				address: '',
 			},
-			ClawmateShare: {
+			ClawmateToken: {
 				address: '',
 			},
 		},
 	},
 	testnet: {
 		general: {
-			injectivePrice: 0.15,
+			injectivePrice: 18,
 		},
 		contracts: {
 			ClawmateManager: {
-				address: '0x9c423c37215ed2D74dC9CD759073d285DFCD50F2',
+				address: '0x0185e619766a7B4b2664B1aacA38A5c1C3e75dD3',
 			},
-			ClawmateShare: {
-				address: '0x659016a7b65a9B7A21CF19416bbd0027132deA9f',
+			ClawmateToken: {
+				address: '0x3cB9f6b7f82Cf69f60bEa53fEDC0c96dCF0bae37',
 			},
 		},
 	},

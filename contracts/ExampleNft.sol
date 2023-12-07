@@ -32,7 +32,7 @@ contract ExampleNft is ERC721, Ownable {
 									Strings.toString(_tokenId),
 									'", "description": "A nft to be used as an example.", "image": "',
 									idToImage[_tokenId],
-									'}'
+									'"}'
 								)
 							)
 						)

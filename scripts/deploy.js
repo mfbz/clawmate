@@ -10,14 +10,16 @@ async function main() {
 	console.log(`Deploying contracts with the account: ${deployer.address}`);
 	console.log(`Account balance: ${(await deployer.provider.getBalance(deployerAddress)).toString()}`);
 
-	const Contract = await ethers.getContractFactory('ClawmateManager');
-	const contract = await Token.deploy(deployerAddress);
-	await contract.waitForDeployment();
+	const contractsToDeploy = ['ClawmateManager', 'ExampleNft'];
 
-	const contractAddress = await contract.getAddress();
+	for (const name of contractsToDeploy) {
+		const Contract = await ethers.getContractFactory(name);
+		const contract = await Contract.deploy(deployerAddress);
+		await contract.waitForDeployment();
 
-	console.log(`ClawmateManager contract deployed`);
-	console.log(`Contract address is ${contractAddress}`);
+		const contractAddress = await contract.getAddress();
+		console.log(`${name} contract deployed: ${contractAddress}`);
+	}
 }
 
 main().catch((error) => {
