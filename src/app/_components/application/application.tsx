@@ -3,11 +3,21 @@
 import Icon from '@ant-design/icons';
 import { Button, Layout, theme as ThemeManager } from 'antd';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { AiOutlinePoweroff } from 'react-icons/ai';
 import { useAccount, useConnect, useContractRead, useDisconnect } from 'wagmi';
 import { TokenChip } from '../token-chip';
 import { InjectiveConstants } from '../../../constants/injective';
+
+let refetchHeaderCallback: (() => Promise<void>) | null = null;
+
+function setRefetchHeader(_refetchHeaderCallback: () => Promise<void>) {
+	refetchHeaderCallback = _refetchHeaderCallback;
+}
+
+export function refetchHeader() {
+	refetchHeaderCallback?.();
+}
 
 export const Application = function Application({ children }: React.PropsWithChildren) {
 	// To navigate to other pages
@@ -59,6 +69,12 @@ export const Application = function Application({ children }: React.PropsWithChi
 		functionName: 'balanceOf',
 		args: [address],
 	});
+
+	useEffect(() => {
+		setRefetchHeader(async () => {
+			await balanceRefetch();
+		});
+	}, [balanceRefetch]);
 
 	return (
 		<Layout style={{ minHeight: '100vh' }}>
