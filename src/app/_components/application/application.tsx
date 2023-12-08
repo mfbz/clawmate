@@ -76,9 +76,22 @@ export const Application = function Application({ children }: React.PropsWithChi
 		});
 	}, [balanceRefetch]);
 
+	const backgroundImage = useMemo(() => {
+		switch (pathname) {
+			case '/':
+				return '/banner-hero.png';
+			case '/dunk':
+				return '/banner-dunk.png';
+			case '/grab':
+				return '/banner-grab.png';
+			default:
+				return undefined;
+		}
+	}, [pathname]);
+
 	return (
-		<Layout style={{ minHeight: '100vh' }}>
-			<Layout style={{ minHeight: '100vh', width: '80%', margin: '0 auto' }}>
+		<Layout style={{ minHeight: '100vh', backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined }}>
+			<Layout style={{ minHeight: '100vh', width: '80%', margin: '0 auto', background: 'transparent' }}>
 				<Layout.Header
 					style={{
 						height: 64 + token.padding,
@@ -147,13 +160,16 @@ export const Application = function Application({ children }: React.PropsWithChi
 					</div>
 				</Layout.Header>
 
-				<Layout.Content style={{ paddingLeft: token.paddingLG, paddingRight: token.paddingLG }}>
-					{children}
+				<Layout.Content
+					style={{
+						display: 'flex',
+						paddingLeft: token.paddingLG,
+						paddingRight: token.paddingLG,
+						background: undefined,
+					}}
+				>
+					<div style={{ flex: 1 }}>{children}</div>
 				</Layout.Content>
-
-				<Layout.Footer style={{ textAlign: 'center', padding: token.paddingLG }}>
-					{'Copyright © 2023 Clawmate'}
-				</Layout.Footer>
 			</Layout>
 		</Layout>
 	);
