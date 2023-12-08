@@ -4,8 +4,10 @@ import Icon from '@ant-design/icons';
 import { Button, Layout, theme as ThemeManager } from 'antd';
 import { useRouter } from 'next/navigation';
 import React, { useMemo } from 'react';
-import { AiOutlineWallet } from 'react-icons/ai';
-import { useAccount, useConnect } from 'wagmi';
+import { AiOutlinePoweroff } from 'react-icons/ai';
+import { useAccount, useConnect, useContractRead, useDisconnect } from 'wagmi';
+import { TokenChip } from '../token-chip';
+import { InjectiveConstants } from '../../../constants/injective';
 
 export const Application = function Application({ children }: React.PropsWithChildren) {
 	const router = useRouter();
@@ -16,11 +18,43 @@ export const Application = function Application({ children }: React.PropsWithChi
 	// Wagmi account data
 	const { address, isConnecting, isConnected, isDisconnected } = useAccount();
 	const { connect, connectors, error, isLoading, pendingConnector } = useConnect();
+	const { disconnect } = useDisconnect();
 
 	// NB: Only use metamask that is 0 in connectors array
 	const connector = useMemo(() => {
 		return connectors[0];
 	}, [connectors]);
+
+	const {
+		data: balanceData,
+		isError: balanceIsError,
+		isLoading: balanceIsLoading,
+		refetch: balanceRefetch,
+	} = useContractRead({
+		address: InjectiveConstants.NETWORK_DATA.contracts.ClawmateToken.address as any,
+		abi: [
+			{
+				inputs: [
+					{
+						internalType: 'address',
+						name: 'account',
+						type: 'address',
+					},
+				],
+				name: 'balanceOf',
+				outputs: [
+					{
+						internalType: 'uint256',
+						name: '',
+						type: 'uint256',
+					},
+				],
+				stateMutability: 'view',
+				type: 'function',
+			},
+		],
+		functionName: 'balanceOf',
+	});
 
 	return (
 		<Layout style={{ minHeight: '100vh' }}>
@@ -51,14 +85,13 @@ export const Application = function Application({ children }: React.PropsWithChi
 							</>
 						) : (
 							<>
-								<Button>{'TODO'}</Button>
+								<div>
+									{balanceData !== null && balanceData !== undefined && (
+										<TokenChip token={'CLAW'} amount={balanceData as bigint} />
+									)}
+								</div>
 
-								<Button
-									icon={<Icon component={() => <AiOutlineWallet />} />}
-									onClick={() => router.push('/users/' + address)}
-								>
-									{''}
-								</Button>
+								<Button icon={<Icon component={() => <AiOutlinePoweroff />} />} onClick={() => disconnect()} />
 							</>
 						)}
 					</div>
