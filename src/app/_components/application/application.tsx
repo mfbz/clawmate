@@ -90,7 +90,13 @@ export const Application = function Application({ children }: React.PropsWithChi
 	}, [pathname]);
 
 	return (
-		<Layout style={{ minHeight: '100vh', backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined }}>
+		<Layout
+			style={{
+				minHeight: '100vh',
+				backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+				backgroundSize: 'cover',
+			}}
+		>
 			<Layout style={{ minHeight: '100vh', width: '80%', margin: '0 auto', background: 'transparent' }}>
 				<Layout.Header
 					style={{
