@@ -2,7 +2,7 @@
 
 import Icon from '@ant-design/icons';
 import { Button, Layout, theme as ThemeManager } from 'antd';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useMemo } from 'react';
 import { AiOutlinePoweroff } from 'react-icons/ai';
 import { useAccount, useConnect, useContractRead, useDisconnect } from 'wagmi';
@@ -10,7 +10,10 @@ import { TokenChip } from '../token-chip';
 import { InjectiveConstants } from '../../../constants/injective';
 
 export const Application = function Application({ children }: React.PropsWithChildren) {
+	// To navigate to other pages
 	const router = useRouter();
+	// Get path in order to know which segmented option to highlight
+	const pathname = usePathname();
 
 	// Antd design token
 	const { token } = ThemeManager.useToken();
@@ -54,6 +57,7 @@ export const Application = function Application({ children }: React.PropsWithChi
 			},
 		],
 		functionName: 'balanceOf',
+		args: [address],
 	});
 
 	return (
@@ -72,8 +76,34 @@ export const Application = function Application({ children }: React.PropsWithChi
 						background: 'transparent',
 					}}
 				>
-					<div style={{ display: 'flex', cursor: 'pointer' }} onClick={() => router.push('/')}>
-						<img src={'/clawmate-logo.png'} height={32} alt={'clawmate logo'}></img>
+					<div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+						<div style={{ display: 'flex', cursor: 'pointer' }} onClick={() => router.push('/')}>
+							<img src={'/clawmate-logo.png'} height={32} alt={'clawmate logo'}></img>
+						</div>
+
+						<Button
+							type={'text'}
+							onClick={() => router.push('/dunk')}
+							style={{
+								marginLeft: token.margin * 2,
+								color: pathname === '/dunk' ? '#43ffe2' : '#FFFFFF',
+								borderBottom: pathname === '/dunk' ? '4px solid #43ffe2' : '0px solid #FFFFFF',
+							}}
+						>
+							{'DUNK'}
+						</Button>
+
+						<Button
+							type={'text'}
+							onClick={() => router.push('/grab')}
+							style={{
+								marginLeft: token.margin,
+								color: pathname === '/grab' ? '#43ffe2' : '#FFFFFF',
+								borderBottom: pathname === '/grab' ? '4px solid #43ffe2' : '0px solid #FFFFFF',
+							}}
+						>
+							{'GRAB'}
+						</Button>
 					</div>
 
 					<div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
@@ -85,13 +115,17 @@ export const Application = function Application({ children }: React.PropsWithChi
 							</>
 						) : (
 							<>
-								<div>
-									{balanceData !== null && balanceData !== undefined && (
-										<TokenChip token={'CLAW'} amount={balanceData as bigint} />
-									)}
-								</div>
+								{balanceData !== null && balanceData !== undefined && (
+									<div style={{ marginRight: token.margin * 2 }}>
+										<TokenChip symbol={'CLAW'} amount={balanceData as bigint} />
+									</div>
+								)}
 
-								<Button icon={<Icon component={() => <AiOutlinePoweroff />} />} onClick={() => disconnect()} />
+								<Button
+									type={'primary'}
+									icon={<Icon component={() => <AiOutlinePoweroff />} />}
+									onClick={() => disconnect()}
+								/>
 							</>
 						)}
 					</div>
