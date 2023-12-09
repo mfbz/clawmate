@@ -279,6 +279,7 @@ export default function DunkPage() {
 						<img src={'/close-icon.png'} width={64} height={64} />
 					</div>
 				}
+				closable={!dunkLoading}
 				footer={null}
 				centered={true}
 				styles={{
@@ -331,6 +332,7 @@ export default function DunkPage() {
 								onClick={() => {
 									// Clear everything
 									hideModal();
+									setTokenData(null);
 									setTokenReward(null);
 									form.resetFields();
 								}}

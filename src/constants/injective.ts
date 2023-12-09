@@ -23,7 +23,7 @@ export const NETWORK_DATA_MAP = {
 				address: '0xA8465477e34f9843442da04BF0cd45deaE2f8e35',
 			},
 			ClawmateToken: {
-				address: '0x3cB9f6b7f82Cf69f60bEa53fEDC0c96dCF0bae37',
+				address: '0xE81b1920892530C431ce787FEBC959BC115Ac76a',
 			},
 		},
 	},

@@ -4,7 +4,7 @@ const { ethers } = require('hardhat');
 require('dotenv').config();
 
 const managerContractAddress = '0xA8465477e34f9843442da04BF0cd45deaE2f8e35';
-const tokenContractAddress = '0x3cB9f6b7f82Cf69f60bEa53fEDC0c96dCF0bae37';
+const tokenContractAddress = '0xE81b1920892530C431ce787FEBC959BC115Ac76a';
 const nftContractAddress = '0xc79838Dd48374599D179748Baeeb6564E7B9b49B';
 
 async function main() {

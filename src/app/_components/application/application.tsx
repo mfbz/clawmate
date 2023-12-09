@@ -6,8 +6,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useMemo } from 'react';
 import { AiOutlinePoweroff } from 'react-icons/ai';
 import { useAccount, useConnect, useContractRead, useDisconnect } from 'wagmi';
-import { TokenChip } from '../token-chip';
 import { InjectiveConstants } from '../../../constants/injective';
+import { TokenChip } from '../token-chip';
 
 let refetchHeaderCallback: (() => Promise<void>) | null = null;
 
@@ -69,7 +69,7 @@ export const Application = function Application({ children }: React.PropsWithChi
 		functionName: 'balanceOf',
 		args: [address],
 	});
-
+	// Set balance refetcher
 	useEffect(() => {
 		setRefetchHeader(async () => {
 			await balanceRefetch();
