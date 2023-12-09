@@ -12,9 +12,7 @@ async function main() {
 	const tokenContract = (await ethers.getContractFactory('ClawmateToken')).attach(tokenContractAddress);
 	const nftContract = (await ethers.getContractFactory('ExampleNft')).attach(nftContractAddress);
 
-	console.log(`Grab price: ${await managerContract.grabPrice()}`);
-	console.log(`ClawmateToken contract address: ${await managerContract.clawContract()}`);
-	console.log(`Nft uri: ${await nftContract.tokenURI(1)}`);
+	await managerContract.updateGrabPrice(BigInt(15450000000000000000));
 }
 
 main().catch((error) => {

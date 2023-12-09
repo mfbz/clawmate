@@ -13,6 +13,11 @@ contract ClawmateManager is IERC721Receiver, Ownable, ReentrancyGuard {
 		uint id;
 	}
 
+	// Default reward value useful for testing
+	uint public constant DEFAULT_TOKEN_REWARD = 141000000000000000000;
+	// Default grab price
+	uint public constant DEFAULT_GRAB_PRICE = 150000000000000000;
+
 	// The main multitoken contract that handles shares
 	ClawmateToken public clawContract;
 
@@ -21,9 +26,6 @@ contract ClawmateManager is IERC721Receiver, Ownable, ReentrancyGuard {
 	// NFT contracts coins per token (NB: this value should be updated dynamically or obtained through another contract call)
 	mapping(address => uint) public tokenToReward;
 
-	// Default reward value useful for testing
-	uint public constant DEFAULT_TOKEN_REWARD = 141000000000000000000;
-
 	// To save dunked tokens having a reference for grabbing
 	Nft[] public tokens;
 
@@ -31,12 +33,14 @@ contract ClawmateManager is IERC721Receiver, Ownable, ReentrancyGuard {
 	uint public grabPrice;
 
 	// Events
-	event TokenDunked(address _token, uint _id, uint _reward);
-	event TokenGrabbed(address _token, uint _id, uint _price);
+	event TokenDunked(address _from, address _token, uint _id, uint _reward);
+	event TokenGrabbed(address _from, address _token, uint _id, uint _price);
 
 	constructor(address _initialOwner) Ownable(_initialOwner) {
 		// Create claw token becoming its owner so that we can execute owner functions directly here
 		clawContract = new ClawmateToken(address(this));
+		// Set default grab price
+		grabPrice = DEFAULT_GRAB_PRICE;
 	}
 
 	function updateTokenAllowed(address _token, bool _allowed) external onlyOwner {
@@ -73,7 +77,7 @@ contract ClawmateManager is IERC721Receiver, Ownable, ReentrancyGuard {
 		clawContract.mintTo(_from, reward);
 
 		// Emit even
-		emit TokenDunked(msg.sender, _tokenId, reward);
+		emit TokenDunked(_from, msg.sender, _tokenId, reward);
 
 		// Return selected to mark as handled
 		return this.onERC721Received.selector;
@@ -103,7 +107,7 @@ contract ClawmateManager is IERC721Receiver, Ownable, ReentrancyGuard {
 		tokens.pop();
 
 		// Emit final event
-		emit TokenGrabbed(nftToGrab.token, nftToGrab.id, grabPrice);
+		emit TokenGrabbed(msg.sender, nftToGrab.token, nftToGrab.id, grabPrice);
 	}
 
 	function getTokens() external view returns (Nft[] memory) {
