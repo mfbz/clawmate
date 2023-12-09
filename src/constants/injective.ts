@@ -20,7 +20,7 @@ export const NETWORK_DATA_MAP = {
 		},
 		contracts: {
 			ClawmateManager: {
-				address: '0x0185e619766a7B4b2664B1aacA38A5c1C3e75dD3',
+				address: '0xA8465477e34f9843442da04BF0cd45deaE2f8e35',
 			},
 			ClawmateToken: {
 				address: '0x3cB9f6b7f82Cf69f60bEa53fEDC0c96dCF0bae37',

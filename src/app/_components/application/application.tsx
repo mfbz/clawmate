@@ -15,8 +15,8 @@ function setRefetchHeader(_refetchHeaderCallback: () => Promise<void>) {
 	refetchHeaderCallback = _refetchHeaderCallback;
 }
 
-export function refetchHeader() {
-	refetchHeaderCallback?.();
+export async function refetchHeader() {
+	if (refetchHeaderCallback) await refetchHeaderCallback();
 }
 
 export const Application = function Application({ children }: React.PropsWithChildren) {

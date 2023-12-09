@@ -21,6 +21,9 @@ contract ClawmateManager is IERC721Receiver, Ownable, ReentrancyGuard {
 	// NFT contracts coins per token (NB: this value should be updated dynamically or obtained through another contract call)
 	mapping(address => uint) public tokenToReward;
 
+	// Default reward value useful for testing
+	uint public constant DEFAULT_TOKEN_REWARD = 141000000000000000000;
+
 	// To save dunked tokens having a reference for grabbing
 	Nft[] public tokens;
 
@@ -54,18 +57,23 @@ contract ClawmateManager is IERC721Receiver, Ownable, ReentrancyGuard {
 		uint256 _tokenId,
 		bytes calldata _data
 	) external returns (bytes4) {
+		// NB: COMMENTED SO THAT ON TESTNET WE CAN USE ANY KIND OF TOKEN WE WANT
+		// TODO REMOVE COMMENTS ONCE ON PRODUCTION AND SET THESE VALUES
 		// Check that the token is allowed
-		require(tokenToAllowed[msg.sender], 'Token not allowed');
+		//require(tokenToAllowed[msg.sender], 'Token not allowed');
 		// Check token reward set
-		require(tokenToReward[msg.sender] > 0, 'Invalid token reward');
+		//require(tokenToReward[msg.sender] > 0, 'Invalid token reward');
+
+		// TODO
+		uint reward = tokenToReward[msg.sender] > 0 ? tokenToReward[msg.sender] : DEFAULT_TOKEN_REWARD;
 
 		// Add token to nfts pool
 		tokens.push(Nft({token: msg.sender, id: _tokenId}));
 		// Mint reward
-		clawContract.mintTo(_from, tokenToReward[msg.sender]);
+		clawContract.mintTo(_from, reward);
 
 		// Emit even
-		emit TokenDunked(msg.sender, _tokenId, tokenToReward[msg.sender]);
+		emit TokenDunked(msg.sender, _tokenId, reward);
 
 		// Return selected to mark as handled
 		return this.onERC721Received.selector;
@@ -104,6 +112,15 @@ contract ClawmateManager is IERC721Receiver, Ownable, ReentrancyGuard {
 			tokensArray[i] = tokens[i];
 		}
 		return tokensArray;
+	}
+
+	function getTokenAllowed(address _token) external view returns (bool) {
+		return tokenToAllowed[_token];
+	}
+
+	function getTokenReward(address _token) external view returns (uint256) {
+		// TODO REMOVE BECAUSE ON PROD THERE IS NO DEFAULT
+		return tokenToReward[_token] > 0 ? tokenToReward[_token] : DEFAULT_TOKEN_REWARD;
 	}
 
 	function pseudoRandom() internal view returns (uint256) {
