@@ -2,7 +2,8 @@
 
 import { Button, Card, Form, Input, Modal, theme as ThemeManager, Typography } from 'antd';
 import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useWindowSize } from 'usehooks-ts';
 import { useAccount } from 'wagmi';
 
 export default function DunkPage() {
@@ -11,6 +12,13 @@ export default function DunkPage() {
 
 	// Get connected user if any
 	const { address, isConnecting, isConnected, isDisconnected } = useAccount();
+
+	// To correctly space hero
+	const { height } = useWindowSize();
+	// Hero top calculated
+	const heroTop = useMemo(() => {
+		return (height - 720) / 3;
+	}, [height]);
 
 	// Modal stuff
 	const [modalOpen, setModalOpen] = useState(false);
@@ -37,7 +45,7 @@ export default function DunkPage() {
 						flexDirection: 'column',
 						justifyContent: 'center',
 						alignItems: 'center',
-						marginTop: 160,
+						marginTop: heroTop,
 					}}
 				>
 					<Typography.Title level={1} style={{ color: '#43ffe2', fontSize: '5em' }}>

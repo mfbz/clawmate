@@ -2,6 +2,8 @@
 
 import { Button, theme as ThemeManager, Typography } from 'antd';
 import { useRouter } from 'next/navigation';
+import { useMemo } from 'react';
+import { useWindowSize } from 'usehooks-ts';
 import { useAccount } from 'wagmi';
 
 export default function HomePage() {
@@ -10,6 +12,13 @@ export default function HomePage() {
 
 	// Get connected user if any
 	const { address, isConnecting, isConnected, isDisconnected } = useAccount();
+
+	// To correctly space hero
+	const { height } = useWindowSize();
+	// Hero top calculated
+	const heroTop = useMemo(() => {
+		return (height - 720) / 3;
+	}, [height]);
 
 	return (
 		<main
@@ -22,7 +31,7 @@ export default function HomePage() {
 				alignItems: 'flex-end',
 			}}
 		>
-			<div style={{ display: 'flex', flexDirection: 'column', marginTop: 160 }}>
+			<div style={{ display: 'flex', flexDirection: 'column', marginTop: heroTop }}>
 				<Typography.Title level={1} style={{ color: '#43ffe2', textAlign: 'right', fontSize: '5em' }}>
 					{'Dunk and Grab NFTs'}
 				</Typography.Title>

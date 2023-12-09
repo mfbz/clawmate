@@ -2,6 +2,8 @@
 
 import { Button, theme as ThemeManager, Typography } from 'antd';
 import { useRouter } from 'next/navigation';
+import { useMemo } from 'react';
+import { useWindowSize } from 'usehooks-ts';
 import { useAccount } from 'wagmi';
 
 export default function GrabPage() {
@@ -10,6 +12,13 @@ export default function GrabPage() {
 
 	// Get connected user if any
 	const { address, isConnecting, isConnected, isDisconnected } = useAccount();
+
+	// To correctly space hero
+	const { height } = useWindowSize();
+	// Hero top calculated
+	const heroTop = useMemo(() => {
+		return (height - 720) / 3;
+	}, [height]);
 
 	return (
 		<main
@@ -28,7 +37,7 @@ export default function GrabPage() {
 					flexDirection: 'column',
 					justifyContent: 'center',
 					alignItems: 'center',
-					marginTop: 160,
+					marginTop: heroTop,
 				}}
 			>
 				<Typography.Title level={1} style={{ color: '#43ffe2', fontSize: '5em' }}>
