@@ -1,17 +1,18 @@
 'use client';
 
 import Icon from '@ant-design/icons';
-import { Button, Card, ConfigProvider, Form, Input, Modal, Spin, theme as ThemeManager, Typography } from 'antd';
+import { Button, Card, Modal, Spin, theme as ThemeManager, Typography } from 'antd';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AiOutlineCodeSandbox } from 'react-icons/ai';
 import { useWindowSize } from 'usehooks-ts';
-import { useAccount, useContractEvent, useContractRead, useWalletClient } from 'wagmi';
+import { useAccount, useContractRead, useWalletClient } from 'wagmi';
 import { getPublicClient, waitForTransaction } from 'wagmi/actions';
 import { InjectiveConstants } from '../../constants/injective';
-import { TokenChip } from '../_components/token-chip';
-import { TokenUtils } from '../_utils/token-utils';
 import { refetchHeader } from '../_components/application';
+import { TokenChip } from '../_components/token-chip';
+import { NftCardGrid } from '../_components/nft-card-grid';
+import { Metadata } from '../_interfaces/metadata';
 
 export default function GrabPage() {
 	const router = useRouter();
@@ -51,6 +52,49 @@ export default function GrabPage() {
 		],
 		functionName: 'grabPrice',
 	});
+
+	// Nft data
+	const {
+		data: nftsData,
+		isError: nftsIsError,
+		isLoading: nftsIsLoading,
+		refetch: nftsRefetch,
+	} = useContractRead({
+		address: InjectiveConstants.NETWORK_DATA.contracts.ClawmateManager.address as any,
+		abi: [
+			{
+				inputs: [],
+				name: 'getTokens',
+				outputs: [
+					{
+						components: [
+							{
+								internalType: 'address',
+								name: 'token',
+								type: 'address',
+							},
+							{
+								internalType: 'uint256',
+								name: 'id',
+								type: 'uint256',
+							},
+						],
+						internalType: 'struct ClawmateManager.Nft[]',
+						name: '',
+						type: 'tuple[]',
+					},
+				],
+				stateMutability: 'view',
+				type: 'function',
+			},
+		],
+		functionName: 'getTokens',
+	});
+	// Convert nfts adhering interface
+	const nfts = useMemo(() => {
+		if (!nftsData) return [];
+		return (nftsData as any[]).map((item: any) => ({ token: item.token, id: item.id }));
+	}, [nftsData]);
 
 	// Modal stuff
 	const [modalOpen, setModalOpen] = useState(false);
@@ -196,6 +240,8 @@ export default function GrabPage() {
 
 			// Refetch balance in the header
 			await refetchHeader();
+			// Refetch nfts
+			await nftsRefetch();
 
 			// Get token data from logs
 			const logs = await getPublicClient().getContractEvents({
@@ -246,74 +292,86 @@ export default function GrabPage() {
 		}
 
 		setGrabLoading(false);
-	}, [showModal, grabPriceData, walletClient]);
+	}, [showModal, nftsRefetch, grabPriceData, walletClient]);
 
 	return (
 		<>
 			<main
 				style={{
 					width: '100%',
-					height: '100%',
 					display: 'flex',
 					flexDirection: 'column',
-					justifyContent: 'flex-start',
-					alignItems: 'center',
 				}}
 			>
 				<div
 					style={{
+						width: '100%',
+						height: '100%',
 						display: 'flex',
 						flexDirection: 'column',
-						justifyContent: 'center',
+						justifyContent: 'flex-start',
 						alignItems: 'center',
-						marginTop: heroTop,
 					}}
 				>
-					<Typography.Title level={1} style={{ color: '#43ffe2', fontSize: '5em' }}>
-						{'Grab NFTs'}
-					</Typography.Title>
-
-					<Typography.Title level={2} style={{ color: '#FFFFFF', marginTop: 0 }}>
-						{'Use your CLAW tokens'}
-					</Typography.Title>
-
-					<Typography.Title level={2} style={{ color: '#FFFFFF', marginTop: 0 }}>
-						{'Grab a random NFT from the pool'}
-					</Typography.Title>
-
 					<div
 						style={{
 							display: 'flex',
-							flexDirection: 'row',
-							justifyContent: 'flex-end',
+							flexDirection: 'column',
+							justifyContent: 'center',
 							alignItems: 'center',
-							marginTop: token.margin * 2,
+							marginTop: heroTop,
 						}}
 					>
-						<Button
-							type={'primary'}
-							size={'large'}
-							onClick={handleGrabToken}
-							style={{
-								height: 64,
-								paddingLeft: token.padding * 4,
-								paddingRight: token.padding * 4,
-							}}
-							disabled={isDisconnected || !grabPriceData}
-						>
-							<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-								<Typography.Title level={2} style={{ margin: 0, color: '#0d1117' }}>
-									{'GRAB'}
-								</Typography.Title>
+						<Typography.Title level={1} style={{ color: '#43ffe2', fontSize: '5em' }}>
+							{'Grab NFTs'}
+						</Typography.Title>
 
-								{grabPriceData !== null && (
-									<div style={{ marginLeft: token.margin }}>
-										<TokenChip symbol={'CLAW'} amount={grabPriceData as bigint} color={'#0d1117'} />
-									</div>
-								)}
-							</div>
-						</Button>
+						<Typography.Title level={2} style={{ color: '#FFFFFF', marginTop: 0 }}>
+							{'Use your CLAW tokens'}
+						</Typography.Title>
+
+						<Typography.Title level={2} style={{ color: '#FFFFFF', marginTop: 0 }}>
+							{'Grab a random NFT from the pool'}
+						</Typography.Title>
+
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'row',
+								justifyContent: 'flex-end',
+								alignItems: 'center',
+								marginTop: token.margin * 2,
+							}}
+						>
+							<Button
+								type={'primary'}
+								size={'large'}
+								onClick={handleGrabToken}
+								style={{
+									height: 64,
+									paddingLeft: token.padding * 4,
+									paddingRight: token.padding * 4,
+								}}
+								disabled={isDisconnected || !grabPriceData}
+							>
+								<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+									<Typography.Title level={2} style={{ margin: 0, color: '#0d1117' }}>
+										{'GRAB'}
+									</Typography.Title>
+
+									{grabPriceData !== null && (
+										<div style={{ marginLeft: token.margin }}>
+											<TokenChip symbol={'CLAW'} amount={grabPriceData as bigint} color={'#0d1117'} />
+										</div>
+									)}
+								</div>
+							</Button>
+						</div>
 					</div>
+				</div>
+
+				<div style={{ width: '100%', marginTop: token.margin * 6 }}>
+					<NftCardGrid nfts={nfts} onGetMetadata={onGetMetadata} />
 				</div>
 			</main>
 

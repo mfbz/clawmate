@@ -22,7 +22,7 @@ export const TokenChip = function TokenChip({
 				alt={'token icon'}
 			></img>
 
-			<Typography.Text strong={true} style={{ color, marginLeft: token.margin }}>
+			<Typography.Text strong={true} style={{ color, marginLeft: token.margin / 2 }}>
 				{TokenUtils.toNumber(amount, 18)}
 			</Typography.Text>
 		</div>

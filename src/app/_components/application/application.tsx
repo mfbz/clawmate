@@ -93,12 +93,25 @@ export const Application = function Application({ children }: React.PropsWithChi
 		<Layout
 			style={{
 				minHeight: '100vh',
-				backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
-				backgroundSize: 'cover',
-				backgroundPosition: 'center',
+				position: 'relative',
 			}}
 		>
-			<Layout style={{ minHeight: '100vh', width: '80%', margin: '0 auto', background: 'transparent' }}>
+			<div
+				style={{
+					minHeight: '100vh',
+					backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+					backgroundSize: 'cover',
+					backgroundRepeat: 'no-repeat',
+					backgroundPosition: 'top',
+					position: 'absolute',
+					top: 0,
+					left: 0,
+					right: 0,
+					zIndex: 0,
+				}}
+			></div>
+
+			<Layout style={{ minHeight: '100vh', width: '80%', margin: '0 auto', background: 'transparent', zIndex: 1 }}>
 				<Layout.Header
 					style={{
 						height: 64 + token.padding,
