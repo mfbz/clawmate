@@ -39,9 +39,11 @@ export const NftCard = function NftCard({
 			style={{ background: '#FFFFFF', border: '1px solid #FFFFFF' }}
 		>
 			<div style={{ display: 'flex', flexDirection: 'column', padding: token.padding }}>
-				<Typography.Text style={{ marginTop: 0 }}>{nft.token}</Typography.Text>
+				<Typography.Text style={{ marginTop: 0, color: '#161D27', overflow: 'hidden' }} ellipsis={true}>
+					{nft.token}
+				</Typography.Text>
 
-				<Typography.Text strong={true} style={{ marginTop: token.margin }}>
+				<Typography.Text strong={true} style={{ marginTop: token.margin, color: '#161D27' }}>
 					{'#' + nft.id.toString()}
 				</Typography.Text>
 			</div>
