@@ -436,10 +436,12 @@ export default function GrabPage() {
 								style={{ width: '30%', background: '#FFFFFF', border: '1px solid #FFFFFF' }}
 							>
 								<div style={{ display: 'flex', flexDirection: 'column', padding: token.padding }}>
-									<Typography.Text style={{ marginTop: 0 }}>{tokenData?.tokenAddress}</Typography.Text>
+									<Typography.Text style={{ marginTop: 0, color: '#161D27', overflow: 'hidden' }} ellipsis={true}>
+										{tokenData?.tokenAddress}
+									</Typography.Text>
 
-									<Typography.Text strong={true} style={{ marginTop: token.margin }}>
-										{'#' + tokenData?.tokenAddress}
+									<Typography.Text strong={true} style={{ marginTop: token.margin, color: '#161D27' }}>
+										{'#' + tokenData?.tokenId}
 									</Typography.Text>
 								</div>
 							</Card>
