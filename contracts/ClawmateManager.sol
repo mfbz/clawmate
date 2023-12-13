@@ -8,17 +8,18 @@ import '@openzeppelin/contracts/token/ERC721/IERC721.sol';
 import './ClawmateToken.sol';
 
 contract ClawmateManager is IERC721Receiver, Ownable, ReentrancyGuard {
+	// A structure for the nfts dunked in the pool
 	struct Nft {
 		address token;
 		uint id;
 	}
 
-	// Default reward value useful for testing
+	// Default reward value useful for testing in CLAW
 	uint public constant DEFAULT_TOKEN_REWARD = 141000000000000000000;
-	// Default grab price
+	// Default grab price in CLAW
 	uint public constant DEFAULT_GRAB_PRICE = 150000000000000000;
 
-	// The main multitoken contract that handles shares
+	// The main contract handling claw token
 	ClawmateToken public clawContract;
 
 	// NFT contracts whitelisted so that they can be dumped here
@@ -36,6 +37,7 @@ contract ClawmateManager is IERC721Receiver, Ownable, ReentrancyGuard {
 	event TokenDunked(address _from, address _token, uint _id, uint _reward);
 	event TokenGrabbed(address _from, address _token, uint _id, uint _price);
 
+	// Ownable constructor
 	constructor(address _initialOwner) Ownable(_initialOwner) {
 		// Create claw token becoming its owner so that we can execute owner functions directly here
 		clawContract = new ClawmateToken(address(this));
@@ -91,10 +93,10 @@ contract ClawmateManager is IERC721Receiver, Ownable, ReentrancyGuard {
 
 		// Deposit claw coins
 		//clawContract.transferFrom(msg.sender, address(this), grabPrice);
-		// Burn coins claw coins
+		// Burn claw coins
 		clawContract.burnFrom(msg.sender, grabPrice);
 
-		// NB: Obviously it would be better to use Chainlink VRF to have it truly random but let's that sink in for this mvp :D
+		// NB: Obviously it would be better to use an oracle to have it truly random but let's that sink in for this mvp :D
 		// Get a pseudo random number indicating the token to be grabbed based on tokens array length
 		uint indexToGrab = pseudoRandom() % tokens.length;
 		// Get associated nft

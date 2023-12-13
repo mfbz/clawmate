@@ -4,7 +4,7 @@
   <h1 style="margin-top:8px;">Clawmate</h1>
 
   <p>
-    <strong>Dunk your NFTs into the pool, earn coins and grab other NFTs.</strong>
+    <strong>Dunk your NFTs into the pool, earn CLAW and grab other NFTs.</strong>
   </p>
 </div>
 
