@@ -10,14 +10,24 @@ async function main() {
 	const nftContract = (await ethers.getContractFactory('ExampleNft')).attach(nftContractAddress);
 
 	// Deploy example nfts
-	await nftContract.safeMint(toAddress, 'https://i.seadn.io/gcs/files/9738dbaf9e5286ef77c1a49e1df495f4.png');
-	await nftContract.safeMint(toAddress, 'https://i.seadn.io/gcs/files/5bdcf7f2c01fbe2a6820024b65f15e59.png');
-	await nftContract.safeMint(toAddress, 'https://metadata.degods.com/g/7724-s3-male.png');
-	await nftContract.safeMint(toAddress, 'https://metadata.degods.com/g/9670-dead.png');
-	await nftContract.safeMint(toAddress, 'https://i.seadn.io/s/raw/files/3c8627ceced8bda42d6626f229820b0b.png');
-	await nftContract.safeMint(toAddress, 'https://i.seadn.io/s/raw/files/6d2b9e29439f6201a67b9d9fdd5fd55e.png');
-	await nftContract.safeMint(toAddress, 'https://i.seadn.io/s/raw/files/daccddc707c4817da36929037a5fc9a1.png');
-	await nftContract.safeMint(toAddress, 'https://metadata.degods.com/g/4284-dead.png');
+	await nftContract.safeMint(
+		toAddress,
+		'https://i2c.seadn.io/ethereum/0xed5af388653567af2f388e6224dc7c4b3241c544/2989/5106bb46e8121d5f510ae2bb7f8cfcac.png',
+	);
+	await nftContract.safeMint(
+		toAddress,
+		'https://i2c.seadn.io/ethereum/0xed5af388653567af2f388e6224dc7c4b3241c544/9615/e9011a8f99803c488763c19d59530bdf.png',
+	);
+	await nftContract.safeMint(
+		toAddress,
+		'https://i2c.seadn.io/ethereum/0xed5af388653567af2f388e6224dc7c4b3241c544/9596/9024d4dc96e68533bf06d0857c2b9735.png',
+	);
+	await nftContract.safeMint(toAddress, 'https://i.seadn.io/s/raw/files/36209b2da0380b785ec363bfc8c9bd19.png');
+	await nftContract.safeMint(toAddress, 'https://i.seadn.io/gcs/files/04d4a3852c4e17f02869832b2a65a1b0.png');
+	await nftContract.safeMint(toAddress, 'https://metadata.degods.com/g/6741-dead.png');
+	await nftContract.safeMint(toAddress, 'https://metadata.degods.com/g/1180-dead.png');
+	await nftContract.safeMint(toAddress, 'https://i.seadn.io/gcs/files/61642f23bd07c7808944c780e29e19de.png');
+	await nftContract.safeMint(toAddress, 'https://i.seadn.io/gcs/files/982a7f5177af12c1c73349eeddaac020.png');
 }
 
 main().catch((error) => {
