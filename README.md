@@ -1,5 +1,5 @@
 <div align="center">
-  <img height="156" src="./public/clawmate-icon.png" />
+  <img height="156" src="./public/clawmate-promo-icon.png" />
 
   <h1 style="margin-top:8px;">Clawmate</h1>
 
