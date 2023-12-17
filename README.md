@@ -23,7 +23,7 @@ This approach could foster a sense of community collaboration, encourages liquid
 
 ## What is Clawmate
 
-Clawmate is a protocol that allow users to dunk their NFTs into a pool and obtain CLAW tokens as reward. CLAW tokens can then be used to grab random NFTs from the pool.
+Clawmate is a protocol to dunk and grab NFTs while earning rewards. Users can dunk their NFTs into a pool and obtain CLAW tokens as reward. CLAW tokens can then be used to grab random NFTs from the pool.
 
 The protocol is based on a smart contract that manages the dunk and grab functionalities and provides a functional interface to other contracts, and another smart contract that handles CLAW token rewards.
 
